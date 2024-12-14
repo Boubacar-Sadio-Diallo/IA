@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="BlockWorldProject" default="compile" basedir=".">
+
+    <!-- Propriétés pour les répertoires source et build -->
+    <property name="build.dir" value="build"/>
+    <property name="src.dir" value="src"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="classpath" value="${classes.dir}:${lib.dir}/*"/>
+
+    <!-- Initialisation: création du répertoire de build -->
+    <target name="init">
+        <echo message="Initialisation du projet et création des répertoires nécessaires..."/>
+        <mkdir dir="${classes.dir}"/>
+    </target>
+
+    <!-- Compilation: compiler toutes les classes -->
+    <target name="compile" depends="init">
+        <echo message="Compilation des fichiers sources..."/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false">
+            <classpath>
+                <path location="${lib.dir}/*"/>
+            </classpath>
+        </javac>
+        <echo message="Compilation terminée avec succès."/>
+    </target>
+
+    <!-- Exécution des classes principales -->
+    <target name="run" depends="compile">
+        <echo message="Exécution des classes principales du package executable..."/>
+        <java classname="executable.BlockWorldDataminingMain" classpath="${classpath}" fork="true"/>
+        <java classname="executable.CSPCombinedConstraintMain" classpath="${classpath}" fork="true"/>
+        <java classname="executable.CSPGrowConstraintMain" classpath="${classpath}" fork="true"/>
+        <java classname="executable.CSPRegularConstraintMain" classpath="${classpath}" fork="true"/>
+        <java classname="executable.Demo" classpath="${classpath}" fork="true"/>
+        <java classname="executable.PlannerMain" classpath="${classpath}" fork="true"/>
+        <java classname="executable.VariablesConstraintsMain" classpath="${classpath}" fork="true"/>
+        <echo message="Toutes les classes ont été exécutées."/>
+    </target>
+
+    <!-- Nettoyage des fichiers de build -->
+    <target name="clean">
+        <echo message="Suppression des fichiers de build..."/>
+        <delete dir="${build.dir}"/>
+        <echo message="Nettoyage terminé."/>
+    </target>
+
+    <!-- Nettoyage des fichiers compilés -->
+    <target name="clean-classes" depends="compile">
+        <echo message="Suppression des fichiers compilés (.class)..."/>
+        <delete>
+            <fileset dir="${classes.dir}" includes="**/*.class"/>
+        </delete>
+        <echo message="Tous les fichiers .class ont été supprimés."/>
+    </target>
+
+</project>
